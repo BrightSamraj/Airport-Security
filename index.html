@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Airport Security Architecture — Interactive Demo</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Optional Bootstrap (for buttons/table) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- THEME & SOUND CONTROLS -->
+  <div class="top-controls">
+    <button id="darkToggle" class="control-btn">🌙</button>
+    <button id="muteToggle" class="control-btn">🔊</button>
+  </div>
+
+  <header class="hero" data-aos="fade-down">
+    <h1>🛫 Airport Security Architecture</h1>
+    <p class="subtitle">Interactive demo — layers, vendors, install flow, simulation</p>
+  </header>
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <button onclick="showSection('home')">Home</button>
+    <button onclick="showSection('architecture')">Architecture</button>
+    <button onclick="showSection('perimeter')">Perimeter</button>
+    <button onclick="showSection('access')">Access</button>
+    <button onclick="showSection('screening')">Screening</button>
+    <button onclick="showSection('baggage')">Baggage</button>
+    <button onclick="showSection('cyber')">Cyber Ops</button>
+    <button onclick="showSection('ai')">AI & IoT</button>
+    <button onclick="showSection('vendors')">Vendors</button>
+    <button onclick="showSection('install')">Install Flow</button>
+    <button onclick="showSection('attackSim')">Attack Simulation</button>
+  </nav>
+
+  <main id="content" class="content">
+
+    <!-- HOME -->
+    <section id="home" class="section active" data-aos="fade-up">
+      <h2>Welcome 👋</h2>
+      <p>This interactive app helps you present airport security architecture. Use the nav above to explore each module.</p>
+      <div class="wide-card" data-aos="zoom-in">
+        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1400&q=80" alt="airport" />
+        <div class="wide-card-caption">Defense-in-Depth: layered security for airports</div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE -->
+    <section id="architecture" class="section" data-aos="fade-up">
+      <h2>Architecture Blueprint</h2>
+      <div class="diagram">
+        <img src="https://i.imgur.com/SwXdNpl.png" alt="architecture diagram" />
+      </div>
+      <p class="muted">High-level layers: Perimeter → Access → Screening → Baggage → Cyber → AI</p>
+    </section>
+
+    <!-- PERIMETER -->
+    <section id="perimeter" class="section" data-aos="fade-up">
+      <h2>Perimeter & Entry Security</h2>
+      <p>First line of defence. Click a device to learn more.</p>
+
+      <div class="card-grid">
+        <article class="device-card" data-aos="flip-left">
+          <img src="https://images.unsplash.com/photo-1581091870625-6f5b8f9de7e2?auto=format&fit=crop&w=800&q=80" alt="PTZ Camera" />
+          <h3>PTZ IP Camera</h3>
+          <button class="btn btn-sm btn-outline-primary" onclick="toggleDetails('ptzDetail')">Details</button>
+          <div id="ptzDetail" class="detail-box">
+            <p><b>How it works:</b> Pan/Tilt/Zoom + AI analytics detect suspicious motion → send event to NVR/SIEM.</p>
+            <p><b>Install:</b> Pole mount → PoE switch → NVR/Video Management Server → VLAN → SIEM.</p>
+            <img class="mini" src="https://i.imgur.com/6CVLyDP.gif" alt="ptz animation" />
+          </div>
+        </article>
+
+        <article class="device-card" data-aos="flip-left">
+          <img src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=800&q=80" alt="fiber sensor" />
+          <h3>Fiber Optic Fence Sensor</h3>
+          <button class="btn btn-sm btn-outline-primary" onclick="toggleDetails('fiberDetail')">Details</button>
+          <div id="fiberDetail" class="detail-box">
+            <p><b>How it works:</b> Laser light travels in fiber → vibration/cutting disturbs signal → sensor triggers alert.</p>
+            <p><b>Install:</b> Attach fiber along fence → connect to analyzer box → map events to location.</p>
+          </div>
+        </article>
+
+        <article class="device-card" data-aos="flip-left">
+          <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=800&q=80" alt="vehicle barrier" />
+          <h3>Vehicle Barrier & LPR</h3>
+          <button class="btn btn-sm btn-outline-primary" onclick="toggleDetails('vpDetail')">Details</button>
+          <div id="vpDetail" class="detail-box">
+            <p><b>How it works:</b> LPR camera captures plate → OCR → match with whitelist/blacklist → automatic barrier control.</p>
+            <p><b>Install:</b> Mount LPR camera near barrier, connect to control system via secure API.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ACCESS -->
+    <section id="access" class="section" data-aos="fade-up">
+      <h2>Access Control</h2>
+      <p>Stop insider threats. Use multi-factor authentication (MFA) + anti-tailgating.</p>
+
+      <div class="flow-diagram">
+        <ol>
+          <li>Badge tap (RFID)</li>
+          <li>Face or fingerprint check</li>
+          <li>Server validation (LDAP/AD)</li>
+          <li>Door unlock / Log to SIEM</li>
+        </ol>
+      </div>
+
+      <button class="btn btn-primary" onclick="showMfaDemo()">Show MFA Demo</button>
+      <div id="mfaConsole" class="console hidden"></div>
+    </section>
+
+    <!-- SCREENING -->
+    <section id="screening" class="section" data-aos="fade-up">
+      <h2>Passenger Screening</h2>
+      <div class="card-grid">
+        <div class="device-card">
+          <img src="https://images.unsplash.com/photo-1566150907522-1f3c9fc44e0e?auto=format&fit=crop&w=800&q=80" alt="body scanner" />
+          <h3>Millimeter Wave Scanner</h3>
+          <div class="detail-box">Detects concealed objects on person. Privacy-masked images or AI detections used.</div>
+        </div>
+
+        <div class="device-card">
+          <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=800&q=80" alt="xray baggage" />
+          <h3>CT Baggage Scanner</h3>
+          <div class="detail-box">3D CT imaging + AI threat detection reduces manual checks.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAGGAGE -->
+    <section id="baggage" class="section" data-aos="fade-up">
+      <h2>Checked Baggage Screening</h2>
+      <div class="wide-card">
+        <img src="https://images.unsplash.com/photo-1568667256549-0945f9a0cb0f?auto=format&fit=crop&w=1400&q=80" alt="baggage" />
+        <div class="wide-card-caption">Inline BHS + CT scanners + RFID bag tracking</div>
+      </div>
+    </section>
+
+    <!-- CYBER -->
+    <section id="cyber" class="section" data-aos="fade-up">
+      <h2>Command Center & Cybersecurity</h2>
+      <p>SIEM, SOAR, IDS/IPS, firewalls and monitoring dashboards.</p>
+
+      <div class="log-console" id="logConsole">
+        <div class="log-header">Live Log Console</div>
+        <div id="logs" class="logs"></div>
+      </div>
+    </section>
+
+    <!-- AI & IOT -->
+    <section id="ai" class="section" data-aos="fade-up">
+      <h2>AI & IoT Layer</h2>
+      <div class="card-grid">
+        <div class="device-card">
+          <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" alt="ai analytics" />
+          <h3>Video Analytics</h3>
+          <div class="detail-box">Behavior analysis, unattended object detection, crowd counting.</div>
+        </div>
+        <div class="device-card">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" alt="iot sensors" />
+          <h3>IoT Sensors</h3>
+          <div class="detail-box">Edge gateways, MQTT over TLS, sensor telemetry.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VENDORS -->
+    <section id="vendors" class="section" data-aos="fade-up">
+      <h2>Vendors</h2>
+      <table class="table table-striped">
+        <thead><tr><th>Vendor</th><th>Category</th></tr></thead>
+        <tbody>
+          <tr><td>Hikvision</td><td>Video Surveillance</td></tr>
+          <tr><td>Smiths Detection</td><td>Screening Solutions</td></tr>
+          <tr><td>Honeywell</td><td>Perimeter & Control</td></tr>
+          <tr><td>Splunk</td><td>SIEM</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- INSTALL FLOW -->
+    <section id="install" class="section" data-aos="fade-up">
+      <h2>Install & Integration Flow (Simulated)</h2>
+      <ol class="install-flow">
+        <li>1. Plan network segmentation & VLANs</li>
+        <li>2. Deploy cameras & sensors physically (conceptual)</li>
+        <li>3. Connect devices to NVR / IoT gateways</li>
+        <li>4. Integrate logs to SIEM and create playbooks</li>
+        <li>5. Test with red-team drills & audits</li>
+      </ol>
+      <button class="btn btn-outline-primary" onclick="simulateInstall()">Run Install Simulation</button>
+      <div id="installResult" class="install-result"></div>
+    </section>
+
+    <!-- ATTACK SIMULATION -->
+    <section id="attackSim" class="section" data-aos="fade-up">
+      <h2>Attack → Detection Simulation</h2>
+      <p>Simulate a cyber attack against the camera network and watch the detection & response flow.</p>
+
+      <div class="sim-controls">
+        <button id="startAttack" class="btn btn-danger">🚨 Launch Attack</button>
+        <button id="stopAttack" class="btn btn-secondary">Reset</button>
+        <label class="form-check-label ms-3"><input id="toggleMute" type="checkbox"> Mute sounds</label>
+      </div>
+
+      <div id="simPanel" class="sim-panel hidden">
+        <div class="sim-stage" id="stage1">1) Suspicious traffic from IP 203.0.113.11</div>
+        <div class="sim-stage" id="stage2">2) IDS (Snort) signature match</div>
+        <div class="sim-stage" id="stage3">3) SIEM correlates camera + network alerts</div>
+        <div class="sim-stage" id="stage4">4) Firewall blocks IP & SOC notified</div>
+        <div class="sim-stage" id="stage5">5) Incident resolved; ticket opened</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- AUDIO ELEMENTS (public URLs) -->
+  <audio id="alertSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
+  <audio id="clickSound" src="https://actions.google.com/sounds/v1/buttons/button_push.ogg" preload="auto"></audio>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="app.js"></script>
+  <script> AOS.init({duration:500,once:true}); </script>
+</body>
+</html>
